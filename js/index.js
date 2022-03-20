@@ -1,6 +1,10 @@
+let pageNum = 1
+
 document.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded')
+    // console.log('DOM fully loaded')
     // const monsterCon = document.getElementById("monster-container")
+    // event.preventDefault()
+
     renderMonsters()
     monsterForm() 
 
@@ -18,28 +22,47 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const backButton = document.getElementById("back")
     const forwardButton = document.getElementById("forward")
+    // console.log(pageNum)
 
     backButton.addEventListener("click", (event) => {
-        
-        console.log("back")
+        // console.log("back")
+        // event.preventDefault()
+        pageNum = pageNum - 1
+        if(pageNum <= 0){
+            alert("FOR MORE MONSTERS GO FORWARD")
+            pageNum = 1
+        }
+        else
+
+        document.querySelector('#monster-container').innerHTML=''
+        renderMonsters()
+        console.log(pageNum)
      
     })
 
     forwardButton.addEventListener("click", (event) => {
+        // console.log("forward")
+        pageNum = pageNum + 1        
+        document.querySelector('#monster-container').innerHTML=''
+        renderMonsters()        
+        event.preventDefault()
+        
+        console.log(pageNum)
 
-        console.log("forward")
-    
     })
 
 
 
 })
 
+
+
 const monsterUrl = "http://localhost:3000/monsters"
 
 function renderMonsters(){
 
-    fetch(`${monsterUrl}/?_limit=50&_page=1`, {
+
+    fetch(`${monsterUrl}/?_limit=50&_page=${pageNum}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json'
@@ -56,6 +79,19 @@ function renderMonsters(){
         // console.log('Success:', element.description);
         createMonsterCard(element)
         })
+
+        // const forwardButton = document.getElementById("forward")
+
+
+        // forwardButton.addEventListener("click", (event) => {
+        //     // console.log("forward")
+        //     pageNum = pageNum + 1
+        //     console.log(pageNum)
+    
+        
+        // })
+
+
 
     })
     .catch((error) => {
